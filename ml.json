@@ -1,0 +1,159 @@
+{
+  "meta": {
+    "topic": "machine_learning_basics",
+    "track": "intro_to_ai",
+    "version": "3.0",
+    "created_at": "2025-11-26 18:35:00.000000Z"
+  },
+  "theory": [
+    {
+      "id": "ml_intro_en",
+      "lang": "en",
+      "title": "What is Machine Learning?",
+      "content": "Machine Learning (ML) is a subset of AI where computers learn from data without being explicitly programmed for specific rules.\n\nMain Types:\n1. Supervised Learning: Learning with labeled data (e.g., predicting house prices based on size).\n2. Unsupervised Learning: Finding patterns in unlabeled data (e.g., grouping customers by purchasing behavior).\n3. Reinforcement Learning: Learning through trial and error (rewards/penalties)."
+    },
+    {
+      "id": "linear_regression_theory_en",
+      "lang": "en",
+      "title": "Supervised Learning: Linear Regression",
+      "content": "Linear Regression is a fundamental algorithm used to predict a continuous value (like price or temperature). It tries to find the 'line of best fit' that minimizes the error between predicted and actual values."
+    },
+    {
+      "id": "logistic_regression_theory_en",
+      "lang": "en",
+      "title": "Supervised Learning: Logistic Regression",
+      "content": "Unlike Linear Regression, Logistic Regression is used for Classification (predicting categories like Yes/No, Spam/Not Spam). It uses the Sigmoid function to squash the output between 0 and 1, representing a probability."
+    },
+    {
+      "id": "knn_theory_en",
+      "lang": "en",
+      "title": "Supervised Learning: K-Nearest Neighbors (KNN)",
+      "content": "KNN is a simple, instance-based learning algorithm. To classify a new data point, it looks at the 'K' closest labeled data points and votes for the most common class. It's often called a 'lazy learner' because it doesn't learn a discriminative function from the training data but memorizes the training dataset instead."
+    },
+    {
+      "id": "decision_tree_theory_en",
+      "lang": "en",
+      "title": "Supervised Learning: Decision Trees",
+      "content": "A Decision Tree is a flowchart-like structure where an internal node represents a feature (or attribute), the branch represents a decision rule, and each leaf node represents the outcome (class label). It splits data into smaller subsets based on questions like 'Is Age > 30?' to maximize information gain."
+    },
+    {
+      "id": "kmeans_theory_en",
+      "lang": "en",
+      "title": "Unsupervised Learning: K-Means Clustering",
+      "content": "K-Means is an algorithm that partitions data into 'K' distinct clusters. It works by initializing K centroids, assigning each data point to the nearest centroid, and then recalculating the centroids based on the mean of the points in the cluster. This process repeats until the centroids stop moving."
+    },
+    {
+      "id": "evaluation_metrics_theory_en",
+      "lang": "en",
+      "title": "Model Evaluation Metrics",
+      "content": "Accuracy isn't always enough, especially with imbalanced data.\n\n1. Precision: Out of all positive predictions, how many were actually positive? (TP / (TP + FP))\n2. Recall (Sensitivity): Out of all actual positives, how many did we find? (TP / (TP + FN))\n3. F1-Score: The harmonic mean of Precision and Recall, useful when you need a balance between the two."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex_linear_regression_sklearn",
+      "lang": "en",
+      "title": "Linear Regression with Scikit-Learn",
+      "code": "import numpy as np\nfrom sklearn.linear_model import LinearRegression\n\n# 1. Prepare Data (Features X and Labels y)\n# X: House size (sq meters), y: Price (in $1000s)\nX = np.array([[50], [60], [80], [100], [120]])\ny = np.array([150, 180, 250, 310, 380])\n\n# 2. Initialize and Train Model\nmodel = LinearRegression()\nmodel.fit(X, y)\n\n# 3. Make a Prediction\nnew_house_size = np.array([[90]])\npredicted_price = model.predict(new_house_size)\n\nprint(f\"Predicted price for 90sqm: ${predicted_price[0]:.2f}k\")",
+      "explanation": "We use the fit() method to train the model on known data (X, y) and predict() to estimate the price for a new house size."
+    },
+    {
+      "id": "ex_logistic_regression_sklearn",
+      "lang": "en",
+      "title": "Logistic Regression (Binary Classification)",
+      "code": "from sklearn.linear_model import LogisticRegression\nimport numpy as np\n\n# Data: [Hours Studied], Label: 0 (Fail) or 1 (Pass)\nX = np.array([[1], [2], [3], [5], [6], [7]])\ny = np.array([0, 0, 0, 1, 1, 1])\n\nmodel = LogisticRegression()\nmodel.fit(X, y)\n\n# Predict for 4 hours\nprediction = model.predict([[4]])\nprobability = model.predict_proba([[4]])\n\nprint(f\"Prediction (4 hrs): {'Pass' if prediction[0]==1 else 'Fail'}\")\nprint(f\"Probability of Passing: {probability[0][1]:.2f}\")",
+      "explanation": "Logistic Regression predicts the probability of a class. Here, we predict if a student passes based on hours studied."
+    },
+    {
+      "id": "ex_train_test_split",
+      "lang": "en",
+      "title": "Data Splitting (Train/Test)",
+      "code": "from sklearn.model_selection import train_test_split\n\n# Fake dataset\nX, y = np.arange(10).reshape(-1, 1), np.arange(10)\n\n# Split: 80% for training, 20% for testing\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nprint(\"Training Set Size:\", len(X_train))\nprint(\"Testing Set Size:\", len(X_test))",
+      "explanation": "Splitting data is crucial to evaluate how well the model performs on unseen data, preventing overfitting."
+    },
+    {
+      "id": "ex_knn_classifier_en",
+      "lang": "en",
+      "title": "Classification using KNN",
+      "code": "from sklearn.neighbors import KNeighborsClassifier\n\n# Data: [Age, Salary], Label: 0 (No Purchase), 1 (Purchase)\nX = [[20, 2000], [25, 2500], [35, 5000], [40, 6000]]\ny = [0, 0, 1, 1]\n\n# K=3 means we look at the 3 nearest neighbors\nknn = KNeighborsClassifier(n_neighbors=3)\nknn.fit(X, y)\n\nnew_customer = [[30, 4000]]\nprint(\"Predicted Class:\", knn.predict(new_customer))",
+      "explanation": "The algorithm calculates the distance between the new customer and previous customers to determine the most appropriate class."
+    },
+    {
+      "id": "ex_decision_tree_sklearn",
+      "lang": "en",
+      "title": "Decision Tree Classifier",
+      "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Features: [Weather, Wind] -> 0:Sunny, 1:Rainy | 0:Weak, 1:Strong\n# Label: Play Tennis? 0:No, 1:Yes\nX = [[0, 0], [0, 1], [1, 0], [1, 1]]\ny = [0, 1, 1, 0]\n\nclf = DecisionTreeClassifier(criterion='entropy')\nclf.fit(X, y)\n\n# Predict for Sunny (0) and Weak Wind (0)\nprint(\"Play?\", clf.predict([[0, 0]]))",
+      "explanation": "Decision Trees learn simple decision rules inferred from the data features to predict the class label."
+    },
+    {
+      "id": "ex_kmeans_sklearn",
+      "lang": "en",
+      "title": "K-Means Clustering (Unsupervised)",
+      "code": "from sklearn.cluster import KMeans\nimport numpy as np\n\n# Data points (2D coordinates)\nX = np.array([[1, 2], [1, 4], [1, 0], \n              [10, 2], [10, 4], [10, 0]])\n\n# We want 2 clusters\nkmeans = KMeans(n_clusters=2, random_state=0)\nkmeans.fit(X)\n\nprint(\"Cluster Labels:\", kmeans.labels_)\nprint(\"Cluster Centers:\", kmeans.cluster_centers_)",
+      "explanation": "K-Means will likely group the first three points (close to x=1) as one cluster and the last three (close to x=10) as another."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "q1_identify_type_en",
+      "lang": "en",
+      "type": "conceptual",
+      "level": "beginner",
+      "question": "You want to group news articles into topics (Sports, Politics, Tech) but you don't have labeled data. Which type of ML should you use?",
+      "options": ["Supervised Learning", "Unsupervised Learning", "Reinforcement Learning"],
+      "solution_text": "Unsupervised Learning (specifically Clustering), because the data is unlabeled."
+    },
+    {
+      "id": "q2_predict_logic_en",
+      "lang": "en",
+      "type": "coding",
+      "level": "intermediate",
+      "question": "Complete the code to calculate the Mean Squared Error (MSE) manually given two lists: actual values and predicted values.",
+      "starter_code": "actual = [10, 20, 30]\npredicted = [12, 18, 33]\n# TODO: Calculate MSE\nmse = 0\n",
+      "solution_code": "actual = [10, 20, 30]\npredicted = [12, 18, 33]\n\nerrors = []\nfor a, p in zip(actual, predicted):\n    errors.append((a - p) ** 2)\n\nmse = sum(errors) / len(errors)\nprint(\"MSE:\", mse)"
+    },
+    {
+      "id": "q3_overfitting_en",
+      "lang": "en",
+      "type": "conceptual",
+      "level": "intermediate",
+      "question": "What do we mean by the term 'Overfitting'?",
+      "solution_text": "Overfitting occurs when the model memorizes the training data and its noise instead of learning general patterns, causing it to fail when predicting on new data."
+    },
+    {
+      "id": "q4_accuracy_calc_en",
+      "lang": "en",
+      "type": "coding",
+      "level": "intermediate",
+      "question": "Calculate accuracy given TP (True Positives), TN, FP, FN.",
+      "starter_code": "TP = 50\nTN = 40\nFP = 5\nFN = 5\n# TODO: Calculate accuracy = (Correct Predictions) / (Total Predictions)\naccuracy = 0.0",
+      "solution_code": "TP = 50\nTN = 40\nFP = 5\nFN = 5\ntotal = TP + TN + FP + FN\naccuracy = (TP + TN) / total\nprint(f\"Accuracy: {accuracy:.2f}\")"
+    },
+    {
+      "id": "q5_bias_variance_en",
+      "lang": "en",
+      "type": "conceptual",
+      "level": "advanced",
+      "question": "High Bias usually leads to what kind of fitting problem?",
+      "options": ["Overfitting", "Underfitting", "Perfect fitting"],
+      "solution_text": "Underfitting. High bias means the model is too simple to capture the underlying pattern (e.g., using a straight line for a curved dataset)."
+    },
+    {
+      "id": "q6_recall_calc_en",
+      "lang": "en",
+      "type": "coding",
+      "level": "advanced",
+      "question": "Calculate Recall manually. Recall = TP / (TP + FN).",
+      "starter_code": "TP = 80\nFN = 20\n# TODO: Calculate recall\nrecall = 0.0",
+      "solution_code": "TP = 80\nFN = 20\nrecall = TP / (TP + FN)\nprint(f\"Recall: {recall:.2f}\")"
+    },
+    {
+      "id": "q7_kmeans_k_en",
+      "lang": "en",
+      "type": "conceptual",
+      "level": "intermediate",
+      "question": "In K-Means clustering, what does 'K' represent?",
+      "solution_text": "'K' represents the number of clusters (groups) you want the algorithm to find in the data."
+    }
+  ]
+}
